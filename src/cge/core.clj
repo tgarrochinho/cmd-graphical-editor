@@ -14,6 +14,7 @@
   (init (count (first image)) (count image)))
 
 (defn- pixel-colour
+  "Get pixel (X,Y) colour"
   ([image x y]
    (try (get-in image [(- y 1) (- x 1)])
         (catch IndexOutOfBoundsException e nil)))
@@ -53,15 +54,18 @@
 ;; #############
 
 (defn- neighbor-pixels [x y]
+  "Find pixel (X,Y) neighbor pixels"
   (let [coordinates '([-1 -1] [-1 0] [-1 1] [0 -1] [0 1] [1 -1] [1 0] [1 1])]
     (map #(vec (map + [x y] %)) coordinates)))
 
 (defn- filter-colour-neighbor-pixels [image [x y]]
+  "Filter neighbor pixels by colour"
   (let [pixel-current-colour (pixel-colour image x y)]
     (->> (neighbor-pixels x y)
          (filter #(= pixel-current-colour (pixel-colour image %))))))
 
-(defn- fill-connected-pixels [image connected-pixels c]
+(defn- fill-same-colour-connected-pixels [image connected-pixels c]
+  "Fills connected pixels containing the same colour, with colour C"
   (if (empty? connected-pixels)
     image
     (let [connected-pixel (first connected-pixels)]
@@ -82,6 +86,4 @@
     (if (or (nil? pixel-current-colour)
             (= pixel-current-colour c))
       image
-      (fill-connected-pixels image (list [x y]) c))))
-
-
+      (fill-same-colour-connected-pixels image (list [x y]) c))))
