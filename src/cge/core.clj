@@ -54,12 +54,12 @@
 ;; #############
 
 (defn- neighbor-pixels [x y]
-  "Find pixel (X,Y) neighbor pixels"
+  "Find neighbor pixels"
   (let [coordinates '([-1 -1] [-1 0] [-1 1] [0 -1] [0 1] [1 -1] [1 0] [1 1])]
     (map #(vec (map + [x y] %)) coordinates)))
 
-(defn- filter-colour-neighbor-pixels [image [x y]]
-  "Filter neighbor pixels by colour"
+(defn- filter-same-colour-neighbor-pixels [image [x y]]
+  "Filter neighbor pixels containg the same colour"
   (let [pixel-current-colour (pixel-colour image x y)]
     (->> (neighbor-pixels x y)
          (filter #(= pixel-current-colour (pixel-colour image %))))))
@@ -70,7 +70,7 @@
     image
     (let [connected-pixel (first connected-pixels)]
       (recur (colour-pixel image connected-pixel c)
-             (->> (filter-colour-neighbor-pixels image connected-pixel)
+             (->> (filter-same-colour-neighbor-pixels image connected-pixel)
                   (concat connected-pixels)
                   (distinct)
                   (rest))
