@@ -5,7 +5,6 @@
 (def o "O")
 (def b "B")
 (def r "R")
-(def a "A")
 (def j "J")
 (def w "W")
 (def z "Z")
@@ -61,8 +60,8 @@
       (is (= (fill-region (init 3 3) 1 1 b)) [[b b b] [b b b] [b b b]])
       (is (= (fill-region (colour-pixel (init 3 3) 2 1 r) 3 1 b)) [[b r b] [b b b] [b b b]]))
     (testing "Outside"
-      (is (= (fill-region (init 3 1) 4 4 b)) [[o o o]]))))
-      ;(is (= (fill-region (init 3 3) 4 4 b)) [[o o o] [o o o] [o o o]]))))
+      (is (= (fill-region (init 3 1) 4 4 b)) [[o o o]])
+      (is (= (fill-region (init 3 3) 4 4 b)) [[o o o] [o o o] [o o o]]))))
 
 (deftest test-clear
   (testing "Clear"
